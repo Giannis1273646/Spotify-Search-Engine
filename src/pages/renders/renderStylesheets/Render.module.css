@@ -1,0 +1,91 @@
+.titles{
+    color:#357af2;
+}
+
+.showsContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.showContainer {
+    flex-basis: calc(20% - 20px); /* Ρύθμιση το πλάτος ώστε να χωράει 4 άλμπουμ ανά σειρά */
+    margin-bottom: 20px;
+    padding: 50px 10px 50px 50px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.showContainerTopResult{
+    flex-basis: calc(20% - 20px);
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.showImage {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 2px solid #357af2;
+    border-radius: 20%;
+}
+
+.noImage {
+    font-style: italic;
+}
+
+.showContainer, .showContainerTopResult{
+    background-color: #e1f0ff;
+}
+
+.episodesContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.episodeContainer {
+    flex-basis: calc(19% - 20px);
+    margin-bottom: 20px;
+    padding: 50px 10px 50px 50px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.episodeContainerTopResult{
+    flex-basis: calc(20% - 20px);
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.episodeImage {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 2px solid #357af2;
+    border-radius: 20%;
+}
+
+.noImage {
+    font-style: italic;
+}
+
+.episodeContainer, .episodeContainerTopResult{
+    background-color: #e1f0ff;
+}
