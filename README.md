@@ -3,3 +3,4 @@ In this project we used the Spotify API and React JS to create a search engine f
 
 First, we need to login to a Spotify account using the project's login page. Once logged in, the home page of the app will show you the newly released albums. The top right of the page shows the profile picture and username of the logged in user. There is also a menu with two options: one to retrieve the user's saved playlists and the other to log out. When searching, the user will see the top result for each category they are searching for, some useful information about each search item and some suggestions based on the search they have made.
 
+In addition, each search term is stored in a database as a search history, which can be viewed and deleted by the user. Also based on the search history, the user is given a suggestion for automatic compression in the search field.  
