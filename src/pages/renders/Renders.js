@@ -32,7 +32,7 @@ export function renderTopResultsOfShows({shows}){
     return (
         <div>
             <h2>Top Result</h2>
-            <div className={styles.showsContainer}>
+            <div className={styles.showsContainerTopResult}>
                 <div className={styles.showContainerTopResult} key={show.id}>
                     <h2 className={styles.titles}>{show.name}</h2>
                      {/* Εμφάνιση της εικόνας εάν υπάρχει, αλλιώς εμφάνιση δικού μας εικονιδίου */}
@@ -90,7 +90,7 @@ export function renderTopResultsOfEpisodes({episodes}){
      return (
          <div>
              <h2>Top Result</h2>
-             <div className={styles.episodesContainer}>
+             <div className={styles.episodesContainerTopResult}>
                  <div className={styles.episodeContainerTopResult} key={episode.id}>
                     <h2 className={styles.titles}>{episode.name}</h2>
                      {/* Εμφάνιση της εικόνας εάν υπάρχει, αλλιώς εμφάνιση του δικού μας εικονιδίου */}

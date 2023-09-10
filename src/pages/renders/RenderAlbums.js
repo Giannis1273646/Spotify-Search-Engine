@@ -47,7 +47,7 @@ export function renderTopResultOfAlbum({albums, albumTracks, isNewRelease = fals
     return (
         <div>
             <h2>Top Result</h2>
-            <div className={styles.albumsContainer}>
+            <div className={styles.albumsContainerTopResult}>
                 <div key={album.id} className={styles.albumContainerTopResult}>
 
                     <h2 className={styles.titles}>{album.name}</h2>
@@ -131,31 +131,29 @@ function renderAlbumsTracks({album, albumTracks}){
 }
 
 //Συνάρτηση για να εμφανίζει τα playlists
-export function renderPlaylist({ playlists, isUsersPlaylists = false }) {
+export function renderPlaylist({ playlists}) {
 
-    //Ελέγχουμε αν θέλουμε να κάνουμε render τα playlists του χρήστη. Αν ναι δεν αφαιρούμε το top result
     let remainingPlaylists = playlists
-    if(!isUsersPlaylists){
-        //Αφαιρούμε το top result
-        remainingPlaylists = playlists.slice(1)
-    }
+
+    //Αφαιρούμε το top result
+    remainingPlaylists = playlists.slice(1)
 
     return (
-    <div className={styles.playlistsContainer}>
-        {remainingPlaylists.map((playlist) => (
-            <div className={styles.playlistContainer} key={playlist.id}>
+        <div className={styles.playlistsContainer}>
+            {remainingPlaylists.map((playlist) => (
+                <div className={styles.playlistContainer} key={playlist.id}>
 
-                {playlist.images && playlist.images.length ? (
-                        <img className={styles.playlistImage} src={playlist.images[0].url} alt="" />
-                    ) : (
-                        <img className={styles.playlistImage} src={playlistIcon} alt=""/>
-                    )}
+                    {playlist.images && playlist.images.length ? (
+                            <img className={styles.playlistImage} src={playlist.images[0].url} alt="" />
+                        ) : (
+                            <img className={styles.playlistImage} src={playlistIcon} alt=""/>
+                        )}
 
-                <h2 className={styles.titles}>{playlist.name}</h2>
-                {renderPlaylistDetails({playlist})}
+                    <h2 className={styles.titles}>{playlist.name}</h2>
+                    {renderPlaylistDetails({playlist})}
 
-            </div>
-        ))}
+                </div>
+            ))}
         </div>
     )
 }
@@ -170,7 +168,7 @@ export function renderTopResultsOfPlaylists({playlists}){
     return (
         <div>
             <h2>Top Result</h2>
-            <div className={styles.playlistsContainer}>
+            <div className={styles.playlistsContainerTopResult}>
                 <div className={styles.playlistContainerTopResult} key={playlist.id}>
                     <h2 className={styles.titles}>{playlist.name}</h2>
                     {playlist.images && playlist.images.length ? (
@@ -187,7 +185,7 @@ export function renderTopResultsOfPlaylists({playlists}){
     )
 }
 
-function renderPlaylistDetails({playlist}){
+export function renderPlaylistDetails({playlist}){
     return(
         <div className={styles.playlistDescription}>
             <p>

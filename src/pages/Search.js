@@ -15,15 +15,16 @@ import {
     renderAlbumsTitle,
     renderArtistsTitle, renderEpisodesTitle,
     renderNewReleaseAlbumsTitle, renderPlaylistsTitle, renderRecommendedTracksTitle,
-    renderRelatedArtistTitle, renderShowsTitle, renderTracksTitle, renderUsersPlaylistsTitle
+    renderRelatedArtistTitle, renderShowsTitle, renderTracksTitle
 } from "./renders/RenderTitles";
 
 import styles from "./stylesheets/Search.module.css"
 import userIcon from "./images/userNoImageIcon.png"
+import {useNavigate} from "react-router-dom";
+import {AiOutlineSearch} from "react-icons/ai";
 
 function Search(){
     //Ορισμός των State variables
-
     //Λίστες για να δεδομένα που θα πάρουμε από το Spotify API
     const [artists, setArtists] = useState([])
     const [tracks, setTracks] = useState([])
@@ -35,8 +36,8 @@ function Search(){
     const [recommendedTracks, setRecommendedTracks] = useState([])
     const[relatedArtists, setRelatedArtists] = useState([])
     const [userProfile, setUserProfile] = useState([])
+    const [history, setHistory] = useState([]);
     const [isNewRelease, setIsNewRelease] = useState(true)
-    const [isUsersPlaylists, setIsUsersPlaylists] = useState(true)
 
     // Για να έχουμε πρόσβαση στο token που λαμβάνουμε από το Spotify API
     const [token, setToken] = useState("")
@@ -45,44 +46,75 @@ function Search(){
     const [searchKey, setSearchKey] = useState('')
     const [searchType, setSearchType] = useState('artist'); // Default search type
     const searchEndpoint = 'https://api.spotify.com/v1/search';
+    const navigate = useNavigate();
+
+    // Για να πάρουμε τις πληροφορίες προφίλ του συνδεδεμένου χρήστη
+    const getUserProfile =  async () => {
+        const endpoint = 'https://api.spotify.com/v1/me'
+
+        try {
+            // Πραγματοποιούμε ένα αίτημα GET στο Spotify API
+            const response = await axios.get(endpoint, {
+                headers: {Authorization: `Bearer ${token}`},
+            })
+
+            //Ελέγχουμε πρώτα αν ο χρήστης έχει εικόνα προφίλ, αν όχι την αποθηκεύουμε σαν null
+            const userProfileImages = response.data.images;
+            const imageUrl = userProfileImages.length > 0 ? userProfileImages[0].url : null;
+
+            // Αποθηκεύουμε μόνο το user name, την εικόνα προφίλ και το id
+            setUserProfile([response.data.display_name, imageUrl, response.data.id]);
+
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                logout()
+            } else {
+                console.error(error);
+            }
+        }
+    }
+    
+    // Ορίζουμε μια ασύγχρονη συνάρτηση για την ανάκτηση και επεξεργασία δεδομένων
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchData = async () => {
+        try {
+            // Fetch user profile and store it in local storage
+            window.localStorage.setItem('userProfile', JSON.stringify(userProfile));
+
+            // Fetch new albums
+            await getNewAlbums();
+
+            // Fetch user history
+            await getUsersHistory(true);
+
+            console.log("All API calls completed.");
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
 
 
     //Για να εκτελείται μόνο στο πρώτο render
     useEffect(() => {
         setToken(window.localStorage.getItem('token'));
-        getUserProfile();
-        console.log("getUserProfile()")
-        getNewAlbums()
-    }, [token]);
-
-    //Για να καλεί τη συνάρτηση getRecommendedTracks, μόνο όταν έχουμε αναζητήσει κομμάτια
-     useEffect(() => {
-        if (tracks.length > 0) {
-            console.log('getRecommendedTracks()')
-            getRecommendedTracks();
-        }
-    }, [tracks]);
-
-    //Για να καλεί τη συνάρτηση getRelatedArtists, μόνο όταν έχουμε αναζητήσει για καλλιτέχνες
-     useEffect(() => {
-        if (artists.length > 0) {
-            getRelatedArtists();
-            console.log('getRelatedArtists()')
-        }
-    }, [artists]);
+        getUserProfile().then(r => fetchData());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token, userProfile[2]]);
 
     const search = async (e) =>{
         e.preventDefault()
 
         try {
-            clearState();
-
             // Συγχρονισμός των searchKey και searchType πριν από την υποβολή του αιτήματος αναζήτησης
             const currentSearchKey = searchKey;
             const currentSearchType = searchType;
+            setSearchKey("");
 
-             console.log('Search Key:', currentSearchKey);
-             console.log('Search Type:', currentSearchType);
+            if(!currentSearchKey){
+                return;
+            }
+
+            clearState();
 
             // Πραγματοποιούμε ένα αίτημα GET στο Spotify API
             const response = await axios.get(searchEndpoint, {
@@ -108,7 +140,6 @@ function Search(){
                await fetchAlbumTrucks(response.data.albums.items)
 
             }else if(currentSearchType === "playlist"){
-                setIsUsersPlaylists(false)
                 setPlaylists(response.data.playlists.items)
                 console.log(response.data.playlists.items)
 
@@ -133,15 +164,15 @@ function Search(){
 
     //Συνάρτηση για να καθαρίζει ολόκληρο το παράθυρο
     const clearState = () => {
-            setArtists([]);
-            setTracks([]);
-            setAlbums([]);
-            setAlbumTracks([]);
-            setPlaylists([]);
-            setShows([]);
-            setEpisodes([]);
-            setRecommendedTracks([]);
-            setRelatedArtists([])
+        setArtists([]);
+        setTracks([]);
+        setAlbums([]);
+        setAlbumTracks([]);
+        setPlaylists([]);
+        setShows([]);
+        setEpisodes([]);
+        setRecommendedTracks([]);
+        setRelatedArtists([]);
     }
 
     //Συνάρτηση που αναζητά και επιστρέφει τα κομμάτια του άλμπουμ, μέσω του id
@@ -167,11 +198,11 @@ function Search(){
         }
     };
 
-     // logout συνάρτηση για την εκκαθάριση του κουπονιού πρόσβασης
+    // logout συνάρτηση για την εκκαθάριση του κουπονιού πρόσβασης
     const logout = () => {
 
         setToken("")
-        window.localStorage.removeItem("token")
+        localStorage.clear();
 
         //Πηγαίνουμε στην αρχική σελίδα
         window.location.href = "/login"
@@ -181,6 +212,7 @@ function Search(){
     const getNewAlbums = async () => {
         const endpoint = 'https://api.spotify.com/v1/browse/new-releases'
         setIsNewRelease(true)
+        clearState();
 
         try {
             // Πραγματοποιούμε ένα αίτημα GET στο Spotify API
@@ -254,6 +286,13 @@ function Search(){
             console.log(error)
         }
     }
+    
+     //Για να καλεί τη συνάρτηση getRecommendedTracks, μόνο όταν έχουμε αναζητήσει κομμάτια
+     useEffect(() => {
+        if (tracks.length > 0) {
+            getRecommendedTracks();
+        }
+    }, [tracks]);
 
     // Παίρνουμε σχετικούς καλλιτέχνες με βάση το top result, αναζητώντας τα με βάση τον καλλιτέχνη
     const getRelatedArtists = async() => {
@@ -273,32 +312,33 @@ function Search(){
             console.log(error)
         }
     }
-
-    // Για να πάρουμε τις πληροφορίες προφίλ του συνδεδεμένου χρήστη
-    const getUserProfile =  async () => {
-        const endpoint = 'https://api.spotify.com/v1/me'
-
-        try {
-            // Πραγματοποιούμε ένα αίτημα GET στο Spotify API
-            const response = await axios.get(endpoint, {
-                headers: {Authorization: `Bearer ${token}`},
-            })
-
-            //Ελέγχουμε πρώτα αν ο χρήστης έχει εικόνα προφίλ, αν όχι την αποθηκεύουμε σαν null
-            const userProfileImages = response.data.images;
-            const imageUrl = userProfileImages.length > 0 ? userProfileImages[0].url : null;
-
-            // Αποθηκεύουμε μόνο το user name, την εικόνα προφίλ και το id
-            setUserProfile([response.data.display_name, imageUrl, response.data.id]);
-            console.log(userProfile)
-
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                logout()
-            } else {
-                console.error(error);
-            }
+    
+    //Για να καλεί τη συνάρτηση getRelatedArtists, μόνο όταν έχουμε αναζητήσει για καλλιτέχνες
+     useEffect(() => {
+        if (artists.length > 0) {
+            getRelatedArtists();
         }
+    }, [artists]);
+
+    const getUsersHistory = (distinct = false) => {
+        if(!distinct){
+            clearState();
+        }
+
+        const userId = userProfile[2];
+
+        axios.get(`http://localhost:4000/api/get-history?userId=${userId}`, {
+            params: {
+                isDistinct: distinct,
+            }})
+            .then((response) => {
+                setHistory(response.data);
+                console.log("History:" + response.data); // The response data from the server
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+        });
+
     }
 
     const renderUser = () =>{
@@ -306,9 +346,11 @@ function Search(){
         // Για να διαχειριστούμε τις επιλογές του χρήστη από το μενού
         const handleMenuOption = (option) =>{
             if (option === "getPlaylist"){
-                getUsersPlaylist();
+                navigate("/saved_playlists")
             }else if(option === "logout"){
                 logout();
+            }else if(option === "getHistory"){
+                navigate("/history");
             }
         }
          return (
@@ -330,6 +372,7 @@ function Search(){
                         className={styles.dropdownButton}></button>
                     <div className={styles.dropdownContent}>
                         <button onClick={() => handleMenuOption("getPlaylist")}>Get Saved Playlist</button>
+                        <button onClick={() => handleMenuOption("getHistory")}>View Search History</button>
                         <button onClick={() => handleMenuOption("logout")}>Logout</button>
                     </div>
                 </div>
@@ -337,41 +380,32 @@ function Search(){
         );
     }
 
-    // Παίρνουμε τις αποθηκευμένες Playlists του χρήστη
-    const getUsersPlaylist = async () =>{
-        const usersId = userProfile[2].id; // Get the ID of the user
-        const endpoint = `https://api.spotify.com/v1/users/${usersId}/playlists`;
-        setIsUsersPlaylists(true)
-
+    const handleInsertData = async () => {
         try {
-           clearState();
-
-            // Πραγματοποιούμε ένα αίτημα GET στο Spotify API
-            const response = await axios.get(endpoint, {
-                headers: {Authorization: `Bearer ${token}`},
-            })
-
-            setPlaylists(response.data.items)
-            console.log(response.data.items)
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                logout()
+            // Ελέγχουμε αν το searchKey δεν είναι null και empty string, ώστε να μην αποθηκευτεί στο ιστορικό αναζήτησης
+            if (searchKey) {
+                // Στέλνουμε ένα POST request στον server για να εισάγουμε τα δεδομένα ιστορικού
+                const response = await axios.post('http://localhost:4000/api/insert-data', { userId: userProfile[2], searchKey });
+                console.log(response.data);
             } else {
-                console.error("Failed to get user's playlist: ", error);
+                console.warn('Search key is null or empty, data not inserted.');
             }
+        } catch (error) {
+            console.error('Error inserting data:', error);
         }
-    }
+    };
 
     // Για να διαχειριστούμε τις αλλαγές του τύπου αναζήτησης
     const handleSearchTypeChange  = (event) => {
         setSearchType(event.target.value);
+        // eslint-disable-next-line no-unused-expressions
     };
 
     return(
         <header className={styles.AppHeader}>
             <form className={styles.formContainer} onSubmit={(event) => search(event)}>
 
-                <div>
+                <div className={styles.inputContainer}>
                     {/* Επιλέγουμε πεδίο για τον τύπο αναζήτησης */}
                     <select
                         className={styles.selectField}
@@ -393,14 +427,30 @@ function Search(){
                         value={searchKey}
                         onChange={(event) => {
                             setSearchKey(event.target.value);
-                            console.log('Input value:', event.target.value);
                         }}
                     />
+                    {/* Search button */}
+                    <button className={styles.searchButton} type="submit" onClick={handleInsertData} ><AiOutlineSearch/></button>
                 </div>
 
-                {/* Search button */}
-                <button className={styles.searchButton} type="submit">Search</button>
-
+                <div className={styles.suggestionContainer}>
+                    {/* Suggestions */}
+                    {searchKey.length > 0 && (
+                        <ul className={styles.ulContainer}>
+                        {history
+                            .filter((item) => item.value.includes(searchKey))
+                            .map((item, index) => (
+                                <li
+                                    className={styles.li}
+                                    key={index}
+                                    onClick={() => setSearchKey(item.value)}
+                                >
+                                    {item.value}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             </form>
 
             {renderUser()}
@@ -446,15 +496,13 @@ function Search(){
 
             {playlists && (
                 <>
-                    {isUsersPlaylists ?
-                        renderUsersPlaylistsTitle({ playlists})
-                        : (
-                            <>
-                                {renderTopResultsOfPlaylists({playlists})}
-                                {renderPlaylistsTitle({ playlists})}
-                            </>
-                        )}
-                    {renderPlaylist({ playlists, isUsersPlaylists: isUsersPlaylists  })}
+
+                    <>
+                        {renderTopResultsOfPlaylists({playlists})}
+                        {renderPlaylistsTitle({ playlists})}
+                    </>
+
+                    {renderPlaylist({ playlists})}
                 </>
             )}
 

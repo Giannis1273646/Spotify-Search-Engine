@@ -3,8 +3,9 @@
 }
 
 .tracksContainer {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center horizontally */
 }
 
 .trackContainer {
@@ -14,6 +15,11 @@
     background-color: #f2f2f2;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tracksContainerTopResult{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .trackContainerTopResult{

@@ -1,0 +1,82 @@
+.body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row; /* Buttons will be in a row */
+    align-items: center; /* Vertically align buttons */
+    justify-content: center; /* Horizontally center the container */
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+
+.h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.ul {
+    list-style: none;
+    padding: 0;
+}
+
+.li {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clearButton {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    width: 150px;
+    height: 35px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.clearButton:hover {
+    background-color: #f3271a;
+}
+
+.goBackButton {
+    display: block;
+    background-color: #357af2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    height: 35px;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.goBackButton:hover {
+    background-color: #2859b7;
+}
+
+.center {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}

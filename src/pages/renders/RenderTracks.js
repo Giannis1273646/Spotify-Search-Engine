@@ -30,7 +30,7 @@ export function renderTopResultOfTracks({tracks}){
     return (
         <div>
             <h2>Top Result</h2>
-            <div className={styles.tracksContainer}>
+            <div className={styles.tracksContainerTopResult}>
                 <div className={styles.trackContainerTopResult} key={track.id}>
                     <h2 className={styles.titles}>{track.name}</h2>
                     {renderTrackImage(track)}

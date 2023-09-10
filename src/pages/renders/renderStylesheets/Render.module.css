@@ -3,8 +3,9 @@
 }
 
 .showsContainer {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center horizontally */
 }
 
 .showContainer {
@@ -14,6 +15,11 @@
     background-color: #f2f2f2;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.showsContainerTopResult{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .showContainerTopResult{
@@ -47,8 +53,9 @@
 }
 
 .episodesContainer {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center horizontally */
 }
 
 .episodeContainer {
@@ -58,6 +65,11 @@
     background-color: #f2f2f2;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.episodesContainerTopResult{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .episodeContainerTopResult{

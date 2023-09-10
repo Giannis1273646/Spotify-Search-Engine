@@ -3,8 +3,14 @@
 }
 
 .artistsContainer {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center horizontally */
+}
+
+.artistsContainerTopResult{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .artistContainer {

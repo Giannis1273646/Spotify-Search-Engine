@@ -35,7 +35,7 @@ export function renderTopResultsOfArtist({artists}){
     return (
         <div>
             <h2>Top Result</h2>
-            <div className={styles.artistsContainer}>
+            <div className={styles.artistsContainerTopResult}>
                 <div className={styles.artistContainerTopResult} key={artist.id}>
                     {/* Εμφάνιση του ονόματος του καλλιτέχνη */}
                     <h2 className={styles.titles}>{artist.name}</h2>

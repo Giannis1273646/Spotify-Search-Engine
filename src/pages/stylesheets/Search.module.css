@@ -11,7 +11,6 @@
     boxSizing: border-box;
 }
 
-
 .profileImage {
     width: 50px;
     height: 50px;
@@ -132,16 +131,18 @@
 }
 
 .searchButton {
-    display: block;
-    margin-top: 10px;
-    margin-left: 110px;
-    background-color: #357af2;
-    color: white;
+    background-Color: #357af2;
+    color: #fff;
     border: none;
+    padding: 10px 16px;
+    font-Size: 16px;
     cursor: pointer;
-    width: 150px;
-    height: 35px;
-    border-radius: 20px;
+    box-Shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-Items: center;
+    flex-grow: 1; /* Allow the input to grow to fill available space */
+    outline: none; /* Remove input outline on focus */
+    height: 34px;
 }
 
 .searchButton:hover {
@@ -150,31 +151,39 @@
 
 .formContainer {
     display: flex;
-    align-items: flex-start;
     flex-direction: column;
+    position: relative;
+    align-items: flex-start;
     justify-content: center;
     margin-bottom: 20px;
+
 }
 
 .inputField {
     padding: 5px;
-    border-radius: 20px ;
-    width: 60%;
-    height: 30%;
-    font-size: 14px;
-    border-color: #357af2;
+    width: 20rem;
+    height: 20px;
+    font-size: 16px;
+    border-color: #357af2 !important;
+    border: none;
+    flex-grow: 1; /* Allow the input to grow to fill available space */
+    outline: none;
+    border-left: 2px solid #357af2;
 }
 
-.inputField:hover,.inputField:focus, .selectField:hover{
-    border-color: #2859b7;
+.inputField:hover,.inputField:focus .selectField:hover{
+    border: none;
+    border-left: 2px solid #357af2;
+
 }
 
 .selectField {
     padding: 5px;
-    border-color: #357af2;
-    border-radius: 20px ;
-    margin-right: 10px;
-
+    border: none;
+    flex-grow: 1; /* Allow the input to grow to fill available space */
+    outline: none;
+    height: 34px;
+    cursor: pointer;
 }
 
 .divContainer{
@@ -183,3 +192,37 @@
     justify-content: center;
 }
 
+.ulContainer{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    width: 60%;
+    height: 30%;
+    font-size: 14px;
+}
+
+.li{
+    cursor: pointer;
+    padding: 8px;
+    background-Color: transparent;
+}
+
+.li:hover{
+    background-color: #ececec;
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center; /* Vertically center the items */
+    overflow: hidden; /* Hide overflow from the button */
+    border-radius: 20px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #357af2 !important;
+}
+
+.suggestionContainer{
+    width: 34.4rem;
+    margin-left: 83px;
+}

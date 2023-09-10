@@ -3,8 +3,9 @@
 }
 
 .albumsContainer {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center horizontally */
 }
 
 .albumContainer {
@@ -14,6 +15,11 @@
     background-color: #f2f2f2;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.albumsContainerTopResult{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .albumContainerTopResult{
@@ -75,6 +81,7 @@
 .playlistsContainer{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center; /* Center horizontally */
 }
 
 .playlistContainer {
@@ -84,6 +91,11 @@
     background-color: #f2f2f2;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.playlistsContainerTopResult{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .playlistContainerTopResult{
@@ -120,4 +132,25 @@
 .playlistContainer, .playlistContainerTopResult {
     background-color: #e1f0ff;
 }
+
+.goBackButton {
+    display: block;
+    background-color: #357af2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    height: 35px;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.goBackButton:hover {
+    background-color: #2859b7;
+}
+
+.userContainer{
+    margin: 20px;
+}
+
 

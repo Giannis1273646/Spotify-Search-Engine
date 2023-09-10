@@ -1,10 +1,9 @@
-import React from 'react';
 import styles from './stylesheets/LoginPage.module.css';
 import backgroundImage from './images/backgroundImage.jpg';
 
 function LoginPage() {
-    const CLIENT_ID = "Replace it with your ID"
-    const REDIRECT_URI = "http://localhost:3000/login"
+    const CLIENT_ID = "replace with your client id "
+    const REDIRECT_URI = "http://localhost:3000/music_player"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
 
